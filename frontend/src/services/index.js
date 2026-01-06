@@ -27,6 +27,8 @@ export const authService = {
   logout() {
     localStorage.removeItem('token');
     localStorage.removeItem('userId');
+    // Note: Using window.location for navigation outside React Router context
+    // In a production app, consider using a navigation callback
     window.location.href = '/login';
   }
 };

@@ -14,7 +14,9 @@ function ChatPage() {
 
   useEffect(() => {
     loadData();
-    const interval = setInterval(loadMessages, 3000); // Poll every 3 seconds
+    // Note: Polling interval set to 3 seconds for demo purposes
+    // In production, consider using WebSocket for real-time updates or increase interval
+    const interval = setInterval(loadMessages, 3000);
     return () => clearInterval(interval);
   }, [matchId]);
 
