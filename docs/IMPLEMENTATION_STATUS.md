@@ -90,19 +90,55 @@ Key Code Locations: N/A
 
 ## Phase 4 — Data Model & API Build
 
-Status: In Progress
+Status: Completed
 
 Completion Checklist:
-- Build core data models
-- Build core API endpoints
-- Create seed data scripts
-- Create API docs (internal)
-- Implement automated checks (lint + minimal tests)
+- [x] Build core data models
+- [x] Build core API endpoints
+- [x] Create seed data scripts
+- [x] Create API docs (internal)
+- [x] Implement automated checks (lint + minimal tests)
 
 Deliverables:
-- Working backend in staging
-- Seed data scripts
-- API docs (internal)
-- Automated checks (lint + minimal tests)
+- [x] Working backend in staging
+- [x] Seed data scripts
+- [x] API docs (internal)
+- [x] Automated checks (lint + minimal tests)
 
-Key Code Locations: backend/server.js, backend/routes/auth.js, backend/schema.sql
+Key Code Locations: 
+- Backend server: backend/server.js
+- Database schema: backend/schema.sql
+- Controllers: backend/controllers/
+- Routes: backend/routes/
+- Middleware: backend/middleware/
+- Seed script: backend/seed.js
+- API documentation: docs/API.md
+## Phase 5 — Client App Build (MVP)
+
+Status: Completed
+
+Completion Checklist:
+- [x] Auth + onboarding
+- [x] Profile & preferences
+- [x] Discovery + connect flow
+- [x] Chat (with basic polling)
+- [x] Pen pal consent gate
+- [x] Address vault UI (enter/update own address)
+- [x] Address reveal flow (mutual)
+- [x] Letter workflow (mark sent/received)
+- [x] Scans upload + archive timeline
+- [x] Safety features (block/report UX)
+- [x] Settings + account basics
+
+Deliverables:
+- [x] MVP app functional in browser
+- [x] All core user journeys implemented
+- [x] Basic styling and navigation
+
+Key Code Locations:
+- Frontend app: frontend/src/App.jsx
+- Pages: frontend/src/pages/
+- Components: frontend/src/components/
+- Services: frontend/src/services/
+- Contexts: frontend/src/contexts/
+- Vite config: frontend/vite.config.js
