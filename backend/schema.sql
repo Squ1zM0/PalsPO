@@ -50,7 +50,7 @@ CREATE TABLE messages (
 
 CREATE TABLE addresses (
   id SERIAL PRIMARY KEY,
-  user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+  user_id INTEGER UNIQUE REFERENCES users(id) ON DELETE CASCADE,
   encrypted_address TEXT,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
