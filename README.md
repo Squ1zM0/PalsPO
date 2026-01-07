@@ -2,6 +2,12 @@
 
 A privacy-conscious pen pal platform that supports matching, in-app communication, physical letter exchange, and scanned letter archiving.
 
+## 🚀 Quick Start
+
+**Deploy to Vercel in 5 minutes**: See [QUICKSTART.md](QUICKSTART.md)
+
+**Local Development**: Run `./setup.sh` or see instructions below
+
 ## Features Implemented (v1 MVP)
 
 ### Backend (Phase 4 - Complete)
