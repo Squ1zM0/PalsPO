@@ -12,15 +12,17 @@ import AddressPage from './pages/AddressPage';
 import LettersPage from './pages/LettersPage';
 import SettingsPage from './pages/SettingsPage';
 
+const LoadingScreen = ({ message = 'Loading...' }) => (
+  <div className="page" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>
+    <div className="loading" style={{ fontSize: '20px', color: 'white' }}>{message}</div>
+  </div>
+);
+
 const PrivateRoute = ({ children }) => {
   const { isAuthenticated, loading } = useAuth();
 
   if (loading) {
-    return (
-      <div className="page" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>
-        <div className="loading" style={{ fontSize: '20px', color: 'white' }}>Loading your account...</div>
-      </div>
-    );
+    return <LoadingScreen message="Loading your account..." />;
   }
 
   return isAuthenticated ? children : <Navigate to="/login" />;
@@ -30,11 +32,7 @@ const PublicRoute = ({ children }) => {
   const { isAuthenticated, loading } = useAuth();
 
   if (loading) {
-    return (
-      <div className="page" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>
-        <div className="loading" style={{ fontSize: '20px', color: 'white' }}>Loading...</div>
-      </div>
-    );
+    return <LoadingScreen />;
   }
 
   return !isAuthenticated ? children : <Navigate to="/dashboard" />;
