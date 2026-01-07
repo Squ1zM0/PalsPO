@@ -19,25 +19,31 @@ function LoginPage() {
       await login(email, password);
       navigate('/dashboard');
     } catch (err) {
-      setError(err.response?.data?.error || 'Login failed');
+      setError(err.response?.data?.error || 'Login failed. Please check your credentials.');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="page" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-      <div className="card" style={{ maxWidth: '400px', width: '100%' }}>
-        <h1 style={{ marginBottom: '20px' }}>Login to PenPal</h1>
+    <div className="page" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>
+      <div className="card" style={{ maxWidth: '450px', width: '100%', margin: '20px' }}>
+        <div style={{ textAlign: 'center', marginBottom: '30px' }}>
+          <h1 style={{ fontSize: '32px', marginBottom: '8px', background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+            ✉️ PenPal Platform
+          </h1>
+          <p style={{ color: '#666', fontSize: '16px' }}>Connect with pen pals around the world</p>
+        </div>
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label>Email</label>
+            <label>Email Address</label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
               placeholder="your@email.com"
+              autoComplete="email"
             />
           </div>
           <div className="form-group">
@@ -47,16 +53,18 @@ function LoginPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              placeholder="••••••••"
+              placeholder="Enter your password"
+              autoComplete="current-password"
+              minLength="8"
             />
           </div>
           {error && <div className="error">{error}</div>}
-          <button type="submit" className="btn btn-primary" disabled={loading} style={{ width: '100%', marginTop: '10px' }}>
-            {loading ? 'Logging in...' : 'Login'}
+          <button type="submit" className="btn btn-primary" disabled={loading} style={{ width: '100%', marginTop: '20px', padding: '12px' }}>
+            {loading ? '🔄 Logging in...' : '🚀 Login'}
           </button>
         </form>
-        <p style={{ marginTop: '20px', textAlign: 'center' }}>
-          Don't have an account? <Link to="/register">Register</Link>
+        <p style={{ marginTop: '24px', textAlign: 'center', color: '#666' }}>
+          Don't have an account? <Link to="/register" style={{ color: '#667eea', fontWeight: '600', textDecoration: 'none' }}>Create one here</Link>
         </p>
       </div>
     </div>
