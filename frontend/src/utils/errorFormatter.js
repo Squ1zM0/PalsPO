@@ -47,3 +47,31 @@ export function formatErrorForDisplay(err) {
   // Fallback for any other type
   return String(err);
 }
+
+/**
+ * Normalize any error value to an Error instance
+ * Ensures consistent error handling across authentication methods
+ * 
+ * @param {any} error - Any error value
+ * @param {string} defaultMessage - Default message if error can't be normalized
+ * @returns {Error} A proper Error instance
+ */
+export function normalizeError(error, defaultMessage = 'An error occurred') {
+  // Already an Error instance
+  if (error instanceof Error) {
+    return error;
+  }
+  
+  // String error
+  if (typeof error === 'string') {
+    return new Error(error);
+  }
+  
+  // Object with message property
+  if (error?.message) {
+    return new Error(String(error.message));
+  }
+  
+  // Fallback
+  return new Error(defaultMessage);
+}

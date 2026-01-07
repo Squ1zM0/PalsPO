@@ -27,7 +27,7 @@ export function validateEnvironment() {
   // The backend API is proxied, so no explicit API URL is needed
   
   // Check for any obvious misconfigurations
-  if (import.meta.env.PROD && !import.meta.env.BASE_URL) {
+  if (import.meta.env.PROD && (!import.meta.env.BASE_URL || import.meta.env.BASE_URL === '')) {
     warnings.push('BASE_URL is not set in production');
   }
   

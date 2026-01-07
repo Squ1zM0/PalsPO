@@ -27,16 +27,11 @@ export const getAuthErrorMessage = (err, defaultMessage = 'An error occurred. Pl
     }
     
     // Use formatError as fallback
-    const formatted = formatErrorForDisplay(err);
-    if (formatted && formatted !== 'Unknown error occurred') {
-      return formatted;
-    }
+    return formatErrorForDisplay(err) || defaultMessage;
   } catch (e) {
     console.error('Error in getAuthErrorMessage:', e);
+    return defaultMessage;
   }
-  
-  // Return default message
-  return defaultMessage;
 };
 
 /**

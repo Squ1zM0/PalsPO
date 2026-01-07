@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { authService } from '../services';
+import { normalizeError } from '../utils/errorFormatter';
 
 const AuthContext = createContext(null);
 
@@ -51,16 +52,8 @@ export const AuthProvider = ({ children }) => {
       console.error('Login error type:', typeof error);
       console.error('Login error constructor:', error?.constructor?.name);
       
-      // Ensure we always throw an Error instance, never an object
-      if (error instanceof Error) {
-        throw error;
-      } else if (typeof error === 'string') {
-        throw new Error(error);
-      } else if (error?.message) {
-        throw new Error(String(error.message));
-      } else {
-        throw new Error('Login failed. Please try again.');
-      }
+      // Normalize to Error instance and re-throw
+      throw normalizeError(error, 'Login failed. Please try again.');
     }
   };
 
@@ -78,16 +71,8 @@ export const AuthProvider = ({ children }) => {
       console.error('Register error type:', typeof error);
       console.error('Register error constructor:', error?.constructor?.name);
       
-      // Ensure we always throw an Error instance, never an object
-      if (error instanceof Error) {
-        throw error;
-      } else if (typeof error === 'string') {
-        throw new Error(error);
-      } else if (error?.message) {
-        throw new Error(String(error.message));
-      } else {
-        throw new Error('Registration failed. Please try again.');
-      }
+      // Normalize to Error instance and re-throw
+      throw normalizeError(error, 'Registration failed. Please try again.');
     }
   };
 
