@@ -25,7 +25,7 @@ function RegisterPage() {
 
     try {
       await register(email, password, alias);
-      navigate('/profile');
+      navigate('/profile', { replace: true });
     } catch (err) {
       setError(err.response?.data?.error || 'Registration failed. Please try again.');
     } finally {

@@ -16,20 +16,34 @@ const PrivateRoute = ({ children }) => {
   const { isAuthenticated, loading } = useAuth();
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="page" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>
+        <div className="card" style={{ textAlign: 'center', maxWidth: '400px' }}>
+          <h2 style={{ marginBottom: '16px' }}>🔄 Loading...</h2>
+          <p style={{ color: '#666' }}>Checking your authentication status</p>
+        </div>
+      </div>
+    );
   }
 
-  return isAuthenticated ? children : <Navigate to="/login" />;
+  return isAuthenticated ? children : <Navigate to="/login" replace />;
 };
 
 const PublicRoute = ({ children }) => {
   const { isAuthenticated, loading } = useAuth();
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="page" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>
+        <div className="card" style={{ textAlign: 'center', maxWidth: '400px' }}>
+          <h2 style={{ marginBottom: '16px' }}>🔄 Loading...</h2>
+          <p style={{ color: '#666' }}>Checking your authentication status</p>
+        </div>
+      </div>
+    );
   }
 
-  return !isAuthenticated ? children : <Navigate to="/dashboard" />;
+  return !isAuthenticated ? children : <Navigate to="/dashboard" replace />;
 };
 
 function AppContent() {
@@ -46,7 +60,8 @@ function AppContent() {
         <Route path="/address" element={<PrivateRoute><AddressPage /></PrivateRoute>} />
         <Route path="/letters/:matchId" element={<PrivateRoute><LettersPage /></PrivateRoute>} />
         <Route path="/settings" element={<PrivateRoute><SettingsPage /></PrivateRoute>} />
-        <Route path="/" element={<Navigate to="/dashboard" />} />
+        <Route path="/" element={<Navigate to="/dashboard" replace />} />
+        <Route path="*" element={<Navigate to="/dashboard" replace />} />
       </Routes>
     </Router>
   );
