@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PenPal Platform - UI Mockups</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 40px 20px;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: white;
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 36px;
+        }
+        .mockup-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+        .mockup {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        }
+        .mockup h2 {
+            color: #667eea;
+            margin-bottom: 16px;
+            font-size: 24px;
+        }
+        .mockup h3 {
+            color: #333;
+            margin: 16px 0 12px 0;
+            font-size: 18px;
+        }
+        .mockup p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+        .nav-bar {
+            background: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .nav-items {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .nav-item {
+            color: #555;
+            text-decoration: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+        .nav-item:hover, .nav-item.active {
+            color: #667eea;
+            background-color: #f0f0f0;
+        }
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            margin: 4px;
+        }
+        .badge-info {
+            background-color: #e3f2fd;
+            color: #1976d2;
+        }
+        .badge-primary {
+            background-color: #e8f5e9;
+            color: #667eea;
+        }
+        .badge-success {
+            background-color: #e8f5e9;
+            color: #388e3c;
+        }
+        .badge-warning {
+            background-color: #fff3e0;
+            color: #f57c00;
+        }
+        .message-bubble {
+            padding: 12px 16px;
+            border-radius: 16px;
+            margin: 8px 0;
+            max-width: 70%;
+        }
+        .message-own {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            margin-left: auto;
+        }
+        .message-partner {
+            background: white;
+            border: 1px solid #e9ecef;
+            color: #333;
+        }
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 12px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #e9ecef;
+        }
+        .timeline-event {
+            position: relative;
+            margin-bottom: 24px;
+            padding: 16px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border: 1px solid #e9ecef;
+        }
+        .timeline-event::before {
+            content: '';
+            position: absolute;
+            left: -18px;
+            top: 20px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #667eea;
+            border: 3px solid white;
+            box-shadow: 0 0 0 2px #e9ecef;
+        }
+        .info-box {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 16px 0;
+        }
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin: 16px 0;
+        }
+        .info-card {
+            padding: 16px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        .info-card .label {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 6px;
+        }
+        .info-card .value {
+            font-size: 16px;
+            font-weight: 500;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 PenPal Platform UI Mockups</h1>
+        
+        <div class="mockup-grid">
+            <!-- Dashboard Mockup -->
+            <div class="mockup">
+                <h2>📊 Dashboard</h2>
+                <div class="nav-bar">
+                    <div class="nav-items">
+                        <a href="#" class="nav-item active">📊 Dashboard</a>
+                        <a href="#" class="nav-item">🔍 Discover</a>
+                        <a href="#" class="nav-item">💬 Matches</a>
+                        <a href="#" class="nav-item">👤 Profile</a>
+                    </div>
+                </div>
+                <h3>🔔 Pending Connection Requests (2)</h3>
+                <div style="border-left: 4px solid #667eea; padding: 12px; margin: 12px 0; background: #f8f9fa; border-radius: 8px;">
+                    <p style="font-weight: 600;">✉️ Alice Writer</p>
+                    <p style="font-size: 14px; color: #666;">Interests: 
+                        <span class="badge badge-primary">books</span>
+                        <span class="badge badge-primary">poetry</span>
+                    </p>
+                </div>
+                <h3>💬 Your Matches (3)</h3>
+                <div style="padding: 12px; margin: 12px 0; background: #f8f9fa; border-radius: 8px;">
+                    <p style="font-weight: 600;">✉️ Bob Reader</p>
+                    <span class="badge badge-success">🎉 Addresses Revealed</span>
+                </div>
+            </div>
+
+            <!-- Discovery Mockup -->
+            <div class="mockup">
+                <h2>🔍 Discovery</h2>
+                <div style="text-align: center; padding: 20px; background: #f8f9fa; border-radius: 12px; margin: 16px 0;">
+                    <h3 style="margin: 0 0 16px 0;">✉️ Creative Writer</h3>
+                    <div style="margin: 16px 0;">
+                        <p style="color: #667eea; font-weight: 600; margin-bottom: 8px;">💭 Interests</p>
+                        <span class="badge badge-primary">travel</span>
+                        <span class="badge badge-primary">photography</span>
+                        <span class="badge badge-primary">art</span>
+                    </div>
+                    <div style="margin: 16px 0;">
+                        <p style="color: #667eea; font-weight: 600; margin-bottom: 8px;">✍️ Writing Style</p>
+                        <span class="badge badge-info">Creative</span>
+                    </div>
+                    <p style="color: #999; font-size: 14px;">Profile 3 of 10</p>
+                </div>
+            </div>
+
+            <!-- Chat Mockup -->
+            <div class="mockup">
+                <h2>💬 Chat</h2>
+                <div style="margin: 16px 0;">
+                    <h3>Chat with Alice Writer</h3>
+                    <span class="badge badge-primary">✨ Pen Pals</span>
+                </div>
+                <div style="background: #f8f9fa; padding: 16px; border-radius: 12px; min-height: 200px;">
+                    <div class="message-bubble message-partner">
+                        <p>Hi! I'd love to be pen pals!</p>
+                        <small style="opacity: 0.7;">2:30 PM</small>
+                    </div>
+                    <div class="message-bubble message-own" style="text-align: right;">
+                        <p>That sounds wonderful! 📮</p>
+                        <small style="opacity: 0.8;">2:35 PM</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profile Mockup -->
+            <div class="mockup">
+                <h2>👤 Profile</h2>
+                <div class="card-grid">
+                    <div class="info-card">
+                        <div class="label">Pen Name</div>
+                        <div class="value">✉️ BookLover</div>
+                    </div>
+                    <div class="info-card">
+                        <div class="label">Writing Style</div>
+                        <div class="value">✍️ Casual</div>
+                    </div>
+                    <div class="info-card">
+                        <div class="label">Region</div>
+                        <div class="value">🌍 United States</div>
+                    </div>
+                    <div class="info-card">
+                        <div class="label">Language</div>
+                        <div class="value">🗣️ English</div>
+                    </div>
+                </div>
+                <div style="margin-top: 16px;">
+                    <p style="color: #667eea; font-weight: 600; margin-bottom: 8px;">Interests</p>
+                    <span class="badge badge-primary">reading</span>
+                    <span class="badge badge-primary">writing</span>
+                    <span class="badge badge-primary">travel</span>
+                </div>
+            </div>
+
+            <!-- Address Mockup -->
+            <div class="mockup">
+                <h2>📬 Address</h2>
+                <div class="info-box">
+                    <p style="color: #856404; font-weight: 600;">🔒 Privacy & Security</p>
+                    <ul style="margin-left: 20px; color: #856404; font-size: 14px;">
+                        <li>Your address is encrypted</li>
+                        <li>Shared only after mutual consent</li>
+                        <li>You control when to share</li>
+                    </ul>
+                </div>
+                <div style="padding: 16px; background: white; border: 2px dashed #667eea; border-radius: 12px;">
+                    <p>123 Main Street, Apt 4B</p>
+                    <p>New York, NY 10001</p>
+                    <p>United States</p>
+                </div>
+            </div>
+
+            <!-- Letters Mockup -->
+            <div class="mockup">
+                <h2>📬 Letters</h2>
+                <div style="background: linear-gradient(135deg, #667eea22 0%, #764ba222 100%); border: 2px solid #667eea; padding: 16px; border-radius: 8px; margin: 16px 0;">
+                    <h3 style="margin: 0 0 12px 0;">📬 Partner's Address</h3>
+                    <div style="background: white; padding: 12px; border-radius: 6px;">
+                        <p>456 Oak Avenue</p>
+                        <p>Boston, MA 02101</p>
+                        <p>United States</p>
+                    </div>
+                </div>
+                <h3>Timeline</h3>
+                <div class="timeline">
+                    <div class="timeline-event">
+                        <p style="font-weight: 600;">📮 You sent a letter</p>
+                        <small style="color: #666;">Dec 15, 2024, 10:30 AM</small>
+                    </div>
+                    <div class="timeline-event">
+                        <p style="font-weight: 600;">📬 Alice received a letter</p>
+                        <small style="color: #666;">Dec 20, 2024, 2:15 PM</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings Mockup -->
+            <div class="mockup">
+                <h2>⚙️ Settings</h2>
+                <h3>👤 Account Information</h3>
+                <div class="card-grid">
+                    <div class="info-card">
+                        <div class="label">Email</div>
+                        <div class="value">📧 user@example.com</div>
+                    </div>
+                    <div class="info-card">
+                        <div class="label">Pen Name</div>
+                        <div class="value">✉️ BookLover</div>
+                    </div>
+                    <div class="info-card">
+                        <div class="label">Member Since</div>
+                        <div class="value">📅 January 2024</div>
+                    </div>
+                </div>
+                <h3 style="margin-top: 20px;">🛡️ Privacy & Safety</h3>
+                <p style="font-size: 14px;">View and manage blocked users</p>
+            </div>
+
+            <!-- Matches Mockup -->
+            <div class="mockup">
+                <h2>💬 Matches</h2>
+                <div style="padding: 16px; margin: 12px 0; background: #f8f9fa; border-radius: 8px; border: 1px solid #e9ecef;">
+                    <h3 style="margin: 0 0 8px 0;">✉️ Alice Writer</h3>
+                    <span class="badge badge-success">🎉 Addresses Revealed</span>
+                    <div style="margin-top: 12px;">
+                        <p style="font-size: 14px; color: #666; margin-bottom: 8px;">Interests:</p>
+                        <span class="badge badge-info">poetry</span>
+                        <span class="badge badge-info">books</span>
+                    </div>
+                </div>
+                <div style="padding: 16px; margin: 12px 0; background: #f8f9fa; border-radius: 8px; border: 1px solid #e9ecef;">
+                    <h3 style="margin: 0 0 8px 0;">✉️ Bob Reader</h3>
+                    <span class="badge badge-primary">✨ Pen Pals</span>
+                </div>
+            </div>
+        </div>
+
+        <div style="background: white; padding: 40px; border-radius: 12px; box-shadow: 0 8px 16px rgba(0,0,0,0.2); margin-top: 40px;">
+            <h2 style="color: #667eea; text-align: center; margin-bottom: 30px;">Application Flow</h2>
+            <div style="max-width: 800px; margin: 0 auto;">
+                <p style="text-align: center; color: #666; line-height: 2;">
+                    <strong>Login/Register</strong> → <strong>Dashboard</strong> → 
+                    <br>↓
+                    <br><strong>Discover</strong> (find pen pals) → Send request
+                    <br>↓
+                    <br><strong>Matches</strong> (view all) → <strong>Chat</strong> (communicate)
+                    <br>↓
+                    <br>Request Pen Pal → Confirm Pen Pal
+                    <br>↓
+                    <br><strong>Letters</strong> (exchange addresses) → Track letters
+                    <br><br>
+                    Side features: <strong>Profile</strong> (edit info) | <strong>Address</strong> (manage) | <strong>Settings</strong> (account)
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
