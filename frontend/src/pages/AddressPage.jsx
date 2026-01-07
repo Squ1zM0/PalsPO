@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Navigation from '../components/Navigation';
 import { addressService } from '../services';
+import { MESSAGE_AUTO_DISMISS_DELAY } from '../constants';
 
 function AddressPage() {
   const [address, setAddress] = useState(null);
@@ -45,7 +46,7 @@ function AddressPage() {
       setMessage('✅ Address saved successfully!');
       setEditing(false);
       loadAddress();
-      setTimeout(() => setMessage(''), 3000);
+      setTimeout(() => setMessage(''), MESSAGE_AUTO_DISMISS_DELAY);
     } catch (error) {
       setMessage('❌ Failed to save address');
     } finally {

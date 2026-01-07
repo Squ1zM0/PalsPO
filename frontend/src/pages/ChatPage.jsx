@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import Navigation from '../components/Navigation';
 import { messageService, matchService } from '../services';
+import { MESSAGE_POLL_INTERVAL } from '../constants';
 
 function ChatPage() {
   const { matchId } = useParams();
@@ -14,7 +15,7 @@ function ChatPage() {
 
   useEffect(() => {
     loadData();
-    const interval = setInterval(loadMessages, 3000);
+    const interval = setInterval(loadMessages, MESSAGE_POLL_INTERVAL);
     return () => clearInterval(interval);
   }, [matchId]);
 

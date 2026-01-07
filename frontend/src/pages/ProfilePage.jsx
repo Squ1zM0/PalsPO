@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Navigation from '../components/Navigation';
 import { profileService } from '../services';
+import { MESSAGE_AUTO_DISMISS_DELAY } from '../constants';
 
 function ProfilePage() {
   const [profile, setProfile] = useState(null);
@@ -54,7 +55,7 @@ function ProfilePage() {
       setMessage('✅ Profile updated successfully!');
       setEditing(false);
       loadProfile();
-      setTimeout(() => setMessage(''), 3000);
+      setTimeout(() => setMessage(''), MESSAGE_AUTO_DISMISS_DELAY);
     } catch (error) {
       setMessage('❌ Failed to update profile');
     } finally {

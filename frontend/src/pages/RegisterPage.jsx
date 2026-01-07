@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { MIN_PASSWORD_LENGTH } from '../constants';
 
 function RegisterPage() {
   const [email, setEmail] = useState('');
@@ -15,8 +16,8 @@ function RegisterPage() {
     e.preventDefault();
     setError('');
     
-    if (password.length < 8) {
-      setError('Password must be at least 8 characters long');
+    if (password.length < MIN_PASSWORD_LENGTH) {
+      setError(`Password must be at least ${MIN_PASSWORD_LENGTH} characters long`);
       return;
     }
     
