@@ -56,6 +56,8 @@ This document provides a complete visual walkthrough of all pages in the PenPal 
 ### 3. Dashboard Page
 **Route:** `/dashboard`
 
+![Dashboard Page](https://github.com/user-attachments/assets/c489603a-1d20-431b-b8a2-6182adbba058)
+
 **Features:**
 - Sticky navigation bar with emoji icons and active states
 - Pending connection requests section (if any)
@@ -95,6 +97,8 @@ This document provides a complete visual walkthrough of all pages in the PenPal 
 ### 4. Discovery Page
 **Route:** `/discovery`
 
+![Discovery Page](https://github.com/user-attachments/assets/becae116-28c9-4d10-9ba8-9ef586710cf4)
+
 **Features:**
 - Swipe-like profile card interface
 - Profile counter showing progress
@@ -124,6 +128,8 @@ This document provides a complete visual walkthrough of all pages in the PenPal 
 ### 5. Matches Page
 **Route:** `/matches`
 
+![Matches Page](https://github.com/user-attachments/assets/f0a0234b-3569-4153-9156-81fe2e27ca37)
+
 **Features:**
 - Grid of all matches
 - Status badges for each relationship stage
@@ -148,6 +154,8 @@ This document provides a complete visual walkthrough of all pages in the PenPal 
 
 ### 6. Chat Page
 **Route:** `/chat/:matchId`
+
+![Chat Page](https://github.com/user-attachments/assets/f7d345b9-af18-44a4-85c6-5a559daefc8d)
 
 **Features:**
 - Modern message bubble interface
@@ -182,6 +190,8 @@ This document provides a complete visual walkthrough of all pages in the PenPal 
 ### 7. Profile Page
 **Route:** `/profile`
 
+![Profile Page](https://github.com/user-attachments/assets/450496cd-96b1-4387-8138-61c86ec290ac)
+
 **Features:**
 - View mode: Grid layout with visual cards
 - Edit mode: Organized form sections
@@ -211,6 +221,8 @@ This document provides a complete visual walkthrough of all pages in the PenPal 
 
 ### 8. Address Page
 **Route:** `/address`
+
+![Address Page](https://github.com/user-attachments/assets/e7c0f343-c5bd-4c78-b120-265fddff43f3)
 
 **Features:**
 - Privacy information box
@@ -244,6 +256,8 @@ This document provides a complete visual walkthrough of all pages in the PenPal 
 
 ### 9. Letters Page
 **Route:** `/letters/:matchId`
+
+![Letters Page](https://github.com/user-attachments/assets/6cde1df7-b029-4bd5-946a-9c1d70fba748)
 
 **Features:**
 - Timeline UI for letter events
@@ -294,6 +308,8 @@ This document provides a complete visual walkthrough of all pages in the PenPal 
 
 ### 10. Settings Page
 **Route:** `/settings`
+
+![Settings Page](https://github.com/user-attachments/assets/4f6ff8a0-2ac9-4c64-97a2-6591f9cff9a1)
 
 **Features:**
 - Card-based account information
