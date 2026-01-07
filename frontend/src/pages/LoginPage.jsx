@@ -17,7 +17,7 @@ function LoginPage() {
 
     try {
       await login(email, password);
-      navigate('/dashboard');
+      navigate('/dashboard', { replace: true });
     } catch (err) {
       setError(err.response?.data?.error || 'Login failed. Please check your credentials.');
     } finally {
