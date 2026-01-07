@@ -51,50 +51,105 @@ function ProfilePage() {
         interests: formData.interests.split(',').map(i => i.trim()).filter(Boolean)
       };
       await profileService.updateProfile(updateData);
-      setMessage('Profile updated successfully!');
+      setMessage('✅ Profile updated successfully!');
       setEditing(false);
       loadProfile();
+      setTimeout(() => setMessage(''), 3000);
     } catch (error) {
-      setMessage('Failed to update profile');
+      setMessage('❌ Failed to update profile');
     } finally {
       setSaving(false);
     }
   };
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return (
+    <div className="page">
+      <Navigation />
+      <div className="loading">Loading your profile</div>
+    </div>
+  );
 
   return (
     <div className="page">
       <Navigation />
       <div className="container">
+        <div style={{ marginBottom: '30px' }}>
+          <h1 style={{ fontSize: '32px', marginBottom: '8px' }}>👤 Your Profile</h1>
+          <p style={{ color: '#666', fontSize: '16px' }}>Manage your pen pal identity</p>
+        </div>
+
         <div className="card">
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-            <h1>Your Profile</h1>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
+            <h2 style={{ fontSize: '22px', margin: 0 }}>Profile Information</h2>
             {!editing && (
               <button onClick={() => setEditing(true)} className="btn btn-primary">
-                Edit Profile
+                ✏️ Edit Profile
               </button>
             )}
           </div>
 
           {!editing ? (
-            <div>
-              <p><strong>Alias:</strong> {profile?.alias}</p>
-              <p><strong>Interests:</strong> {Array.isArray(profile?.interests) ? profile.interests.join(', ') : 'None'}</p>
-              <p><strong>Writing Style:</strong> {profile?.writing_style || 'Not set'}</p>
-              <p><strong>Age Range:</strong> {profile?.age_range || 'Not set'}</p>
-              <p><strong>Region:</strong> {profile?.region || 'Not set'}</p>
-              <p><strong>Language:</strong> {profile?.language || 'Not set'}</p>
+            <div style={{ display: 'grid', gap: '20px' }}>
+              <div style={{ padding: '16px', backgroundColor: '#f8f9fa', borderRadius: '8px' }}>
+                <p style={{ fontSize: '14px', color: '#666', marginBottom: '6px' }}>Pen Name</p>
+                <p style={{ fontSize: '18px', fontWeight: '600' }}>✉️ {profile?.alias}</p>
+              </div>
+              
+              <div style={{ padding: '16px', backgroundColor: '#f8f9fa', borderRadius: '8px' }}>
+                <p style={{ fontSize: '14px', color: '#666', marginBottom: '8px' }}>Interests</p>
+                {profile?.interests && profile.interests.length > 0 ? (
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                    {profile.interests.map((interest, idx) => (
+                      <span key={idx} className="badge badge-primary">
+                        {interest}
+                      </span>
+                    ))}
+                  </div>
+                ) : (
+                  <p style={{ color: '#999' }}>No interests added yet</p>
+                )}
+              </div>
+
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '16px' }}>
+                <div style={{ padding: '16px', backgroundColor: '#f8f9fa', borderRadius: '8px' }}>
+                  <p style={{ fontSize: '14px', color: '#666', marginBottom: '6px' }}>Writing Style</p>
+                  <p style={{ fontSize: '16px', fontWeight: '500', textTransform: 'capitalize' }}>
+                    ✍️ {profile?.writing_style || 'Not set'}
+                  </p>
+                </div>
+
+                <div style={{ padding: '16px', backgroundColor: '#f8f9fa', borderRadius: '8px' }}>
+                  <p style={{ fontSize: '14px', color: '#666', marginBottom: '6px' }}>Age Range</p>
+                  <p style={{ fontSize: '16px', fontWeight: '500' }}>
+                    🎂 {profile?.age_range || 'Not set'}
+                  </p>
+                </div>
+
+                <div style={{ padding: '16px', backgroundColor: '#f8f9fa', borderRadius: '8px' }}>
+                  <p style={{ fontSize: '14px', color: '#666', marginBottom: '6px' }}>Region</p>
+                  <p style={{ fontSize: '16px', fontWeight: '500' }}>
+                    🌍 {profile?.region || 'Not set'}
+                  </p>
+                </div>
+
+                <div style={{ padding: '16px', backgroundColor: '#f8f9fa', borderRadius: '8px' }}>
+                  <p style={{ fontSize: '14px', color: '#666', marginBottom: '6px' }}>Language</p>
+                  <p style={{ fontSize: '16px', fontWeight: '500' }}>
+                    🗣️ {profile?.language || 'Not set'}
+                  </p>
+                </div>
+              </div>
             </div>
           ) : (
             <form onSubmit={handleSubmit}>
               <div className="form-group">
-                <label>Alias</label>
+                <label>Pen Name (Alias)</label>
                 <input
                   type="text"
                   value={formData.alias}
                   onChange={(e) => setFormData({ ...formData, alias: e.target.value })}
                   required
+                  placeholder="Your creative pen name"
                 />
               </div>
               <div className="form-group">
@@ -103,8 +158,9 @@ function ProfilePage() {
                   type="text"
                   value={formData.interests}
                   onChange={(e) => setFormData({ ...formData, interests: e.target.value })}
-                  placeholder="writing, travel, books"
+                  placeholder="writing, travel, books, art, music"
                 />
+                <small style={{ color: '#666', fontSize: '12px' }}>Separate multiple interests with commas</small>
               </div>
               <div className="form-group">
                 <label>Writing Style</label>
@@ -112,10 +168,10 @@ function ProfilePage() {
                   value={formData.writing_style}
                   onChange={(e) => setFormData({ ...formData, writing_style: e.target.value })}
                 >
-                  <option value="">Select...</option>
-                  <option value="casual">Casual</option>
-                  <option value="formal">Formal</option>
-                  <option value="creative">Creative</option>
+                  <option value="">Select a style...</option>
+                  <option value="casual">Casual - Friendly and relaxed</option>
+                  <option value="formal">Formal - Professional and structured</option>
+                  <option value="creative">Creative - Artistic and expressive</option>
                 </select>
               </div>
               <div className="form-group">
@@ -133,7 +189,7 @@ function ProfilePage() {
                   type="text"
                   value={formData.region}
                   onChange={(e) => setFormData({ ...formData, region: e.target.value })}
-                  placeholder="United States"
+                  placeholder="United States, Europe, Asia, etc."
                 />
               </div>
               <div className="form-group">
@@ -142,16 +198,20 @@ function ProfilePage() {
                   type="text"
                   value={formData.language}
                   onChange={(e) => setFormData({ ...formData, language: e.target.value })}
-                  placeholder="English"
+                  placeholder="English, Spanish, French, etc."
                 />
               </div>
-              {message && <div className={message.includes('success') ? 'success' : 'error'}>{message}</div>}
-              <div style={{ display: 'flex', gap: '10px', marginTop: '10px' }}>
+              {message && (
+                <div className={message.includes('success') ? 'success' : 'error'}>
+                  {message}
+                </div>
+              )}
+              <div style={{ display: 'flex', gap: '10px', marginTop: '20px' }}>
                 <button type="submit" className="btn btn-primary" disabled={saving}>
-                  {saving ? 'Saving...' : 'Save Changes'}
+                  {saving ? '⏳ Saving...' : '💾 Save Changes'}
                 </button>
                 <button type="button" onClick={() => setEditing(false)} className="btn btn-secondary">
-                  Cancel
+                  ❌ Cancel
                 </button>
               </div>
             </form>
