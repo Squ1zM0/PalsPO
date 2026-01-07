@@ -11,7 +11,10 @@ class ErrorBoundary extends React.Component {
   }
 
   componentDidCatch(error, errorInfo) {
+    // Always log errors, even in production
     console.error('ErrorBoundary caught an error:', error, errorInfo);
+    console.error('Error stack:', error.stack);
+    console.error('Component stack:', errorInfo.componentStack);
     this.setState({ error, errorInfo });
   }
 
@@ -41,10 +44,10 @@ class ErrorBoundary extends React.Component {
             >
               🔐 Return to Login
             </button>
-            {process.env.NODE_ENV === 'development' && this.state.error && (
+            {this.state.error && (
               <details style={{ marginTop: '24px', textAlign: 'left' }}>
                 <summary style={{ cursor: 'pointer', color: '#667eea', fontWeight: '600' }}>
-                  Error Details (Development Only)
+                  Error Details
                 </summary>
                 <pre style={{ 
                   marginTop: '12px', 

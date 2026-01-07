@@ -2,6 +2,14 @@
 
 A privacy-conscious pen pal platform that supports matching, in-app communication, physical letter exchange, and scanned letter archiving.
 
+## 🚨 Production Deployment Notice
+
+**If you're experiencing authentication issues in production** (e.g., "Something went wrong" errors), please see [PRODUCTION_TROUBLESHOOTING.md](PRODUCTION_TROUBLESHOOTING.md) for:
+- Quick diagnosis steps
+- Environment variable setup
+- Common fixes
+- Health check endpoint usage
+
 ## 🚀 Quick Start
 
 **Deploy to Vercel in 5 minutes**: See [QUICKSTART.md](QUICKSTART.md)

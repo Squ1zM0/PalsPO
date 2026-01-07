@@ -19,6 +19,15 @@ const adminRoutes = require('./routes/admin');
 const app = express();
 const port = process.env.PORT || 3000;
 
+// Environment variable validation
+const requiredEnvVars = ['DATABASE_URL', 'JWT_SECRET'];
+const missingEnvVars = requiredEnvVars.filter(envVar => !process.env[envVar]);
+
+if (missingEnvVars.length > 0) {
+  console.error('CRITICAL: Missing required environment variables:', missingEnvVars.join(', '));
+  console.error('Server may not function properly without these variables.');
+}
+
 // Middleware
 app.use(cors());
 app.use(helmet());
@@ -59,6 +68,33 @@ app.get('/', (req, res) => {
       admin: '/api/admin'
     }
   });
+});
+
+// Health check endpoint
+app.get('/api/health', async (req, res) => {
+  const health = {
+    status: 'ok',
+    timestamp: new Date().toISOString(),
+    environment: {
+      nodeEnv: process.env.NODE_ENV || 'not set',
+      hasDatabase: !!process.env.DATABASE_URL,
+      hasJwtSecret: !!process.env.JWT_SECRET,
+      hasAwsConfig: !!(process.env.AWS_ACCESS_KEY_ID && process.env.AWS_SECRET_ACCESS_KEY),
+    }
+  };
+
+  // Test database connection
+  try {
+    const pool = require('../db');
+    await pool.query('SELECT 1');
+    health.database = 'connected';
+  } catch (error) {
+    health.database = 'error';
+    health.databaseError = error.message;
+    health.status = 'degraded';
+  }
+
+  res.json(health);
 });
 
 // Only start server when running directly (not in serverless environment)

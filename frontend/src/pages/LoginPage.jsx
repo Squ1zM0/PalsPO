@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { handleAuthError } from '../utils/authErrors';
 
 function LoginPage() {
   const [email, setEmail] = useState('');
@@ -19,7 +20,7 @@ function LoginPage() {
       await login(email, password);
       navigate('/dashboard', { replace: true });
     } catch (err) {
-      setError(err.response?.data?.error || 'Login failed. Please check your credentials.');
+      handleAuthError(err, 'Login', setError);
     } finally {
       setLoading(false);
     }

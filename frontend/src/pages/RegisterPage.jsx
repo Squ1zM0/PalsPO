@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { MIN_PASSWORD_LENGTH } from '../constants';
+import { handleAuthError } from '../utils/authErrors';
 
 function RegisterPage() {
   const [email, setEmail] = useState('');
@@ -27,7 +28,7 @@ function RegisterPage() {
       await register(email, password, alias);
       navigate('/profile', { replace: true });
     } catch (err) {
-      setError(err.response?.data?.error || 'Registration failed. Please try again.');
+      handleAuthError(err, 'Registration', setError);
     } finally {
       setLoading(false);
     }
