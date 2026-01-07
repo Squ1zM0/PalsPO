@@ -2,49 +2,10 @@
  * Utility functions for handling authentication errors
  */
 
-/**
- * Safely format any error value into a displayable string
- * Prevents rendering objects in JSX which causes "Minified React error #31"
- * @param {any} err - Any error value (Error, object, string, etc.)
- * @returns {string} Safe string representation
- */
-export const formatError = (err) => {
-  if (!err) return 'Unknown error occurred';
-  
-  // Handle Error instances
-  if (err instanceof Error) {
-    return err.message || 'An error occurred';
-  }
-  
-  // Handle strings
-  if (typeof err === 'string') return err;
-  
-  // Handle objects (API errors, Axios errors, etc.)
-  if (typeof err === 'object') {
-    try {
-      // Extract common error message patterns
-      if (err.message) return String(err.message);
-      if (err.error) return String(err.error);
-      if (err.error_description) return String(err.error_description);
-      if (err.statusText) return String(err.statusText);
-      
-      // Try to stringify for debugging
-      const stringified = JSON.stringify(err);
-      if (stringified && stringified !== '{}') {
-        return stringified;
-      }
-    } catch (e) {
-      // JSON.stringify can fail on circular references
-      console.error('Error stringifying error object:', e);
-    }
-    
-    // Last resort for objects
-    return String(err);
-  }
-  
-  // For any other type
-  return String(err);
-};
+import { formatErrorForDisplay } from './errorFormatter';
+
+// Re-export for convenience
+export const formatError = formatErrorForDisplay;
 
 /**
  * Extract a user-friendly error message from an API error
@@ -66,7 +27,7 @@ export const getAuthErrorMessage = (err, defaultMessage = 'An error occurred. Pl
     }
     
     // Use formatError as fallback
-    const formatted = formatError(err);
+    const formatted = formatErrorForDisplay(err);
     if (formatted && formatted !== 'Unknown error occurred') {
       return formatted;
     }

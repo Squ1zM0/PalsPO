@@ -1,39 +1,5 @@
 import React from 'react';
-
-/**
- * Safely format any error value into a displayable string
- * Prevents "Minified React error #31" by never returning objects
- */
-function formatErrorForDisplay(err) {
-  if (!err) return 'Unknown error occurred';
-  
-  // Handle Error instances
-  if (err instanceof Error) {
-    return err.message || err.toString();
-  }
-  
-  // Handle strings
-  if (typeof err === 'string') return err;
-  
-  // Handle objects (like Supabase errors, API response errors)
-  if (typeof err === 'object') {
-    try {
-      // Try to extract common error properties
-      if (err.message) return String(err.message);
-      if (err.error) return String(err.error);
-      if (err.error_description) return String(err.error_description);
-      
-      // Last resort: stringify the object
-      return JSON.stringify(err, null, 2);
-    } catch (stringifyError) {
-      // If JSON.stringify fails, use String()
-      return String(err);
-    }
-  }
-  
-  // Fallback for any other type
-  return String(err);
-}
+import { formatErrorForDisplay } from '../utils/errorFormatter';
 
 class ErrorBoundary extends React.Component {
   constructor(props) {
