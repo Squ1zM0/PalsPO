@@ -2,6 +2,11 @@
  * Utility functions for handling authentication errors
  */
 
+import { formatErrorForDisplay } from './errorFormatter';
+
+// Re-export for convenience
+export const formatError = formatErrorForDisplay;
+
 /**
  * Extract a user-friendly error message from an API error
  * @param {Error} err - The error object from the API call
@@ -9,18 +14,24 @@
  * @returns {string} User-friendly error message
  */
 export const getAuthErrorMessage = (err, defaultMessage = 'An error occurred. Please try again.') => {
-  // Check for response error from API
-  if (err.response?.data?.error) {
-    return err.response.data.error;
+  // Ensure we always return a string
+  try {
+    // Check for response error from API (Axios style)
+    if (err?.response?.data?.error) {
+      return String(err.response.data.error);
+    }
+    
+    // Check for error message from exception
+    if (err?.message) {
+      return String(err.message);
+    }
+    
+    // Use formatError as fallback
+    return formatErrorForDisplay(err) || defaultMessage;
+  } catch (e) {
+    console.error('Error in getAuthErrorMessage:', e);
+    return defaultMessage;
   }
-  
-  // Check for error message from exception
-  if (err.message) {
-    return err.message;
-  }
-  
-  // Return default message
-  return defaultMessage;
 };
 
 /**
@@ -31,24 +42,38 @@ export const getAuthErrorMessage = (err, defaultMessage = 'An error occurred. Pl
  * @returns {string} The error message that was set
  */
 export const handleAuthError = (err, context, setError) => {
-  console.error(`${context} error:`, err);
+  // Enhanced logging for production debugging
+  console.error(`${context} failed:`, err);
+  console.error(`${context} error type:`, typeof err);
+  console.error(`${context} error constructor:`, err?.constructor?.name);
   
   let errorMessage;
   
-  // Check for response error
-  if (err.response) {
-    console.error('Response status:', err.response.status);
-    console.error('Response data:', err.response.data);
-    errorMessage = getAuthErrorMessage(err, `${context} failed. Please try again.`);
-  } else if (err.request) {
-    // No response received
-    console.error('No response received. Request:', err.request);
-    errorMessage = 'Unable to connect to server. Please check your internet connection.';
-  } else {
-    // Other error
-    errorMessage = getAuthErrorMessage(err, `${context} failed. Please try again.`);
+  try {
+    // Check for response error (Axios)
+    if (err?.response) {
+      console.error(`${context} response status:`, err.response.status);
+      console.error(`${context} response data:`, err.response.data);
+      errorMessage = getAuthErrorMessage(err, `${context} failed. Please try again.`);
+    } else if (err?.request) {
+      // No response received
+      console.error(`${context} no response. Request:`, err.request);
+      errorMessage = 'Unable to connect to server. Please check your internet connection.';
+    } else {
+      // Other error
+      console.error(`${context} other error:`, err);
+      errorMessage = getAuthErrorMessage(err, `${context} failed. Please try again.`);
+    }
+  } catch (handlingError) {
+    console.error('Error while handling auth error:', handlingError);
+    errorMessage = `${context} failed. Please try again.`;
   }
   
-  setError(errorMessage);
-  return errorMessage;
+  // Ensure errorMessage is always a string
+  const safeErrorMessage = String(errorMessage || `${context} failed. Please try again.`);
+  
+  // Set the error state with a guaranteed string
+  setError(safeErrorMessage);
+  
+  return safeErrorMessage;
 };

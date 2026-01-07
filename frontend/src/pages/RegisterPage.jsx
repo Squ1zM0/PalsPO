@@ -80,7 +80,7 @@ function RegisterPage() {
             />
             <small style={{ color: '#666', fontSize: '12px' }}>Must be at least 8 characters long</small>
           </div>
-          {error && <div className="error">{error}</div>}
+          {error && <div className="error">{String(error)}</div>}
           <button type="submit" className="btn btn-primary" disabled={loading} style={{ width: '100%', marginTop: '20px', padding: '12px' }}>
             {loading ? '🔄 Creating account...' : '✨ Create Account'}
           </button>

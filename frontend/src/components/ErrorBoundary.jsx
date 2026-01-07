@@ -1,4 +1,5 @@
 import React from 'react';
+import { formatErrorForDisplay } from '../utils/errorFormatter';
 
 class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -13,7 +14,16 @@ class ErrorBoundary extends React.Component {
   componentDidCatch(error, errorInfo) {
     // Always log errors, even in production
     console.error('ErrorBoundary caught an error:', error, errorInfo);
-    console.error('Error stack:', error.stack);
+    console.error('Error type:', typeof error);
+    console.error('Error constructor:', error?.constructor?.name);
+    
+    if (error instanceof Error) {
+      console.error('Error message:', error.message);
+      console.error('Error stack:', error.stack);
+    } else {
+      console.error('Non-Error object caught:', error);
+    }
+    
     console.error('Component stack:', errorInfo.componentStack);
     this.setState({ error, errorInfo });
   }
@@ -58,7 +68,7 @@ class ErrorBoundary extends React.Component {
                   fontSize: '12px',
                   color: '#dc3545'
                 }}>
-                  {this.state.error.toString()}
+                  {formatErrorForDisplay(this.state.error)}
                   {this.state.errorInfo && this.state.errorInfo.componentStack}
                 </pre>
               </details>
