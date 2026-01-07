@@ -20,10 +20,13 @@ export const AuthProvider = ({ children }) => {
       const token = localStorage.getItem('token');
       if (token) {
         try {
+          console.log('AuthContext: Loading user from token...');
           const userData = await authService.getMe();
+          console.log('AuthContext: User loaded successfully');
           setUser(userData);
         } catch (error) {
           console.error('Failed to load user:', error);
+          console.error('Load user error type:', typeof error);
           localStorage.removeItem('token');
           localStorage.removeItem('userId');
         }
@@ -36,27 +39,55 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
+      console.log('AuthContext: Starting login...');
       const response = await authService.login(email, password);
+      console.log('AuthContext: Login successful, fetching user data...');
       const userData = await authService.getMe();
+      console.log('AuthContext: User data fetched successfully');
       setUser(userData);
       return response;
     } catch (error) {
       console.error('Login error in AuthContext:', error);
-      // Re-throw with more context
-      throw error;
+      console.error('Login error type:', typeof error);
+      console.error('Login error constructor:', error?.constructor?.name);
+      
+      // Ensure we always throw an Error instance, never an object
+      if (error instanceof Error) {
+        throw error;
+      } else if (typeof error === 'string') {
+        throw new Error(error);
+      } else if (error?.message) {
+        throw new Error(String(error.message));
+      } else {
+        throw new Error('Login failed. Please try again.');
+      }
     }
   };
 
   const register = async (email, password, alias) => {
     try {
+      console.log('AuthContext: Starting registration...');
       const response = await authService.register(email, password, alias);
+      console.log('AuthContext: Registration successful, fetching user data...');
       const userData = await authService.getMe();
+      console.log('AuthContext: User data fetched successfully');
       setUser(userData);
       return response;
     } catch (error) {
       console.error('Register error in AuthContext:', error);
-      // Re-throw with more context
-      throw error;
+      console.error('Register error type:', typeof error);
+      console.error('Register error constructor:', error?.constructor?.name);
+      
+      // Ensure we always throw an Error instance, never an object
+      if (error instanceof Error) {
+        throw error;
+      } else if (typeof error === 'string') {
+        throw new Error(error);
+      } else if (error?.message) {
+        throw new Error(String(error.message));
+      } else {
+        throw new Error('Registration failed. Please try again.');
+      }
     }
   };
 

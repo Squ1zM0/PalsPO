@@ -1,5 +1,40 @@
 import React from 'react';
 
+/**
+ * Safely format any error value into a displayable string
+ * Prevents "Minified React error #31" by never returning objects
+ */
+function formatErrorForDisplay(err) {
+  if (!err) return 'Unknown error occurred';
+  
+  // Handle Error instances
+  if (err instanceof Error) {
+    return err.message || err.toString();
+  }
+  
+  // Handle strings
+  if (typeof err === 'string') return err;
+  
+  // Handle objects (like Supabase errors, API response errors)
+  if (typeof err === 'object') {
+    try {
+      // Try to extract common error properties
+      if (err.message) return String(err.message);
+      if (err.error) return String(err.error);
+      if (err.error_description) return String(err.error_description);
+      
+      // Last resort: stringify the object
+      return JSON.stringify(err, null, 2);
+    } catch (stringifyError) {
+      // If JSON.stringify fails, use String()
+      return String(err);
+    }
+  }
+  
+  // Fallback for any other type
+  return String(err);
+}
+
 class ErrorBoundary extends React.Component {
   constructor(props) {
     super(props);
@@ -13,7 +48,16 @@ class ErrorBoundary extends React.Component {
   componentDidCatch(error, errorInfo) {
     // Always log errors, even in production
     console.error('ErrorBoundary caught an error:', error, errorInfo);
-    console.error('Error stack:', error.stack);
+    console.error('Error type:', typeof error);
+    console.error('Error constructor:', error?.constructor?.name);
+    
+    if (error instanceof Error) {
+      console.error('Error message:', error.message);
+      console.error('Error stack:', error.stack);
+    } else {
+      console.error('Non-Error object caught:', error);
+    }
+    
     console.error('Component stack:', errorInfo.componentStack);
     this.setState({ error, errorInfo });
   }
@@ -58,7 +102,7 @@ class ErrorBoundary extends React.Component {
                   fontSize: '12px',
                   color: '#dc3545'
                 }}>
-                  {this.state.error.toString()}
+                  {formatErrorForDisplay(this.state.error)}
                   {this.state.errorInfo && this.state.errorInfo.componentStack}
                 </pre>
               </details>
