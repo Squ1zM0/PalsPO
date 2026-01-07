@@ -2,6 +2,12 @@
 
 A privacy-conscious pen pal platform that supports matching, in-app communication, physical letter exchange, and scanned letter archiving.
 
+## 🚀 Quick Start
+
+**Deploy to Vercel in 5 minutes**: See [QUICKSTART.md](QUICKSTART.md)
+
+**Local Development**: Run `./setup.sh` or see instructions below
+
 ## Features Implemented (v1 MVP)
 
 ### Backend (Phase 4 - Complete)
@@ -32,6 +38,20 @@ A privacy-conscious pen pal platform that supports matching, in-app communicatio
 - ✅ Settings and safety controls
 
 ## Getting Started
+
+### Deployment Options
+
+#### Option 1: Deploy to Vercel (Recommended for Production)
+
+See **[VERCEL_DEPLOYMENT.md](VERCEL_DEPLOYMENT.md)** for complete deployment instructions.
+
+Quick deploy:
+```bash
+npm install -g vercel
+vercel
+```
+
+#### Option 2: Local Development
 
 ### Prerequisites
 - Node.js (v16 or higher)
