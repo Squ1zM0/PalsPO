@@ -16,7 +16,11 @@ const PrivateRoute = ({ children }) => {
   const { isAuthenticated, loading } = useAuth();
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="page" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>
+        <div className="loading" style={{ fontSize: '20px', color: 'white' }}>Loading your account...</div>
+      </div>
+    );
   }
 
   return isAuthenticated ? children : <Navigate to="/login" />;
@@ -26,7 +30,11 @@ const PublicRoute = ({ children }) => {
   const { isAuthenticated, loading } = useAuth();
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="page" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>
+        <div className="loading" style={{ fontSize: '20px', color: 'white' }}>Loading...</div>
+      </div>
+    );
   }
 
   return !isAuthenticated ? children : <Navigate to="/dashboard" />;
