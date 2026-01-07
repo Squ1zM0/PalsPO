@@ -61,8 +61,8 @@ app.get('/', (req, res) => {
   });
 });
 
-// Only start server if not in serverless environment (Vercel)
-if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
+// Only start server when running directly (not in serverless environment)
+if (require.main === module) {
   app.listen(port, () => {
     console.log(`Server running on port ${port}`);
   });
