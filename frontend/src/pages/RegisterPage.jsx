@@ -27,7 +27,21 @@ function RegisterPage() {
       await register(email, password, alias);
       navigate('/profile', { replace: true });
     } catch (err) {
-      setError(err.response?.data?.error || 'Registration failed. Please try again.');
+      console.error('Registration error:', err);
+      // Show detailed error message
+      const errorMessage = err.response?.data?.error 
+        || err.message 
+        || 'Registration failed. Please try again.';
+      setError(errorMessage);
+      
+      // Log additional details for debugging
+      if (err.response) {
+        console.error('Response status:', err.response.status);
+        console.error('Response data:', err.response.data);
+      } else if (err.request) {
+        console.error('No response received. Request:', err.request);
+        setError('Unable to connect to server. Please check your internet connection.');
+      }
     } finally {
       setLoading(false);
     }

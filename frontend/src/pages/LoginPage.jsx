@@ -19,7 +19,21 @@ function LoginPage() {
       await login(email, password);
       navigate('/dashboard', { replace: true });
     } catch (err) {
-      setError(err.response?.data?.error || 'Login failed. Please check your credentials.');
+      console.error('Login error:', err);
+      // Show detailed error message
+      const errorMessage = err.response?.data?.error 
+        || err.message 
+        || 'Login failed. Please check your credentials and try again.';
+      setError(errorMessage);
+      
+      // Log additional details for debugging
+      if (err.response) {
+        console.error('Response status:', err.response.status);
+        console.error('Response data:', err.response.data);
+      } else if (err.request) {
+        console.error('No response received. Request:', err.request);
+        setError('Unable to connect to server. Please check your internet connection.');
+      }
     } finally {
       setLoading(false);
     }

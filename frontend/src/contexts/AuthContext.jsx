@@ -35,17 +35,29 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const login = async (email, password) => {
-    const response = await authService.login(email, password);
-    const userData = await authService.getMe();
-    setUser(userData);
-    return response;
+    try {
+      const response = await authService.login(email, password);
+      const userData = await authService.getMe();
+      setUser(userData);
+      return response;
+    } catch (error) {
+      console.error('Login error in AuthContext:', error);
+      // Re-throw with more context
+      throw error;
+    }
   };
 
   const register = async (email, password, alias) => {
-    const response = await authService.register(email, password, alias);
-    const userData = await authService.getMe();
-    setUser(userData);
-    return response;
+    try {
+      const response = await authService.register(email, password, alias);
+      const userData = await authService.getMe();
+      setUser(userData);
+      return response;
+    } catch (error) {
+      console.error('Register error in AuthContext:', error);
+      // Re-throw with more context
+      throw error;
+    }
   };
 
   const logout = () => {
