@@ -33,6 +33,20 @@ A privacy-conscious pen pal platform that supports matching, in-app communicatio
 
 ## Getting Started
 
+### Deployment Options
+
+#### Option 1: Deploy to Vercel (Recommended for Production)
+
+See **[VERCEL_DEPLOYMENT.md](VERCEL_DEPLOYMENT.md)** for complete deployment instructions.
+
+Quick deploy:
+```bash
+npm install -g vercel
+vercel
+```
+
+#### Option 2: Local Development
+
 ### Prerequisites
 - Node.js (v16 or higher)
 - PostgreSQL database
