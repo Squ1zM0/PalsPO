@@ -2,8 +2,8 @@ const { Pool } = require('pg');
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
-  // Configure for serverless environment (Vercel)
-  max: 1, // Limit connections in serverless
+  // Limit to 1 connection per lambda instance to avoid connection pool exhaustion in serverless
+  max: 1,
   idleTimeoutMillis: 30000,
   connectionTimeoutMillis: 10000,
 });

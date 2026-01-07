@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { MIN_PASSWORD_LENGTH } from '../constants';
+import { handleAuthError } from '../utils/authErrors';
 
 function RegisterPage() {
   const [email, setEmail] = useState('');
@@ -27,21 +28,7 @@ function RegisterPage() {
       await register(email, password, alias);
       navigate('/profile', { replace: true });
     } catch (err) {
-      console.error('Registration error:', err);
-      // Show detailed error message
-      const errorMessage = err.response?.data?.error 
-        || err.message 
-        || 'Registration failed. Please try again.';
-      setError(errorMessage);
-      
-      // Log additional details for debugging
-      if (err.response) {
-        console.error('Response status:', err.response.status);
-        console.error('Response data:', err.response.data);
-      } else if (err.request) {
-        console.error('No response received. Request:', err.request);
-        setError('Unable to connect to server. Please check your internet connection.');
-      }
+      handleAuthError(err, 'Registration', setError);
     } finally {
       setLoading(false);
     }

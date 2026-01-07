@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { handleAuthError } from '../utils/authErrors';
 
 function LoginPage() {
   const [email, setEmail] = useState('');
@@ -19,21 +20,7 @@ function LoginPage() {
       await login(email, password);
       navigate('/dashboard', { replace: true });
     } catch (err) {
-      console.error('Login error:', err);
-      // Show detailed error message
-      const errorMessage = err.response?.data?.error 
-        || err.message 
-        || 'Login failed. Please check your credentials and try again.';
-      setError(errorMessage);
-      
-      // Log additional details for debugging
-      if (err.response) {
-        console.error('Response status:', err.response.status);
-        console.error('Response data:', err.response.data);
-      } else if (err.request) {
-        console.error('No response received. Request:', err.request);
-        setError('Unable to connect to server. Please check your internet connection.');
-      }
+      handleAuthError(err, 'Login', setError);
     } finally {
       setLoading(false);
     }
