@@ -8,11 +8,17 @@ const authMiddleware = (req, res, next) => {
       return res.status(401).json({ error: 'No authentication token provided' });
     }
 
+    if (!process.env.JWT_SECRET) {
+      console.error('CRITICAL: JWT_SECRET is not configured');
+      return res.status(500).json({ error: 'Server configuration error' });
+    }
+
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     req.userId = decoded.userId;
     next();
   } catch (error) {
-    res.status(401).json({ error: 'Invalid authentication token' });
+    console.error('Auth middleware error:', error.message);
+    res.status(401).json({ error: 'Invalid authentication token', message: error.message });
   }
 };
 
