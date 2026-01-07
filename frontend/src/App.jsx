@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
+import LoadingSpinner from './components/LoadingSpinner';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import DashboardPage from './pages/DashboardPage';
@@ -16,14 +17,7 @@ const PrivateRoute = ({ children }) => {
   const { isAuthenticated, loading } = useAuth();
 
   if (loading) {
-    return (
-      <div className="page" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>
-        <div className="card" style={{ textAlign: 'center', maxWidth: '400px' }}>
-          <h2 style={{ marginBottom: '16px' }}>🔄 Loading...</h2>
-          <p style={{ color: '#666' }}>Checking your authentication status</p>
-        </div>
-      </div>
-    );
+    return <LoadingSpinner />;
   }
 
   return isAuthenticated ? children : <Navigate to="/login" replace />;
@@ -33,14 +27,7 @@ const PublicRoute = ({ children }) => {
   const { isAuthenticated, loading } = useAuth();
 
   if (loading) {
-    return (
-      <div className="page" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>
-        <div className="card" style={{ textAlign: 'center', maxWidth: '400px' }}>
-          <h2 style={{ marginBottom: '16px' }}>🔄 Loading...</h2>
-          <p style={{ color: '#666' }}>Checking your authentication status</p>
-        </div>
-      </div>
-    );
+    return <LoadingSpinner />;
   }
 
   return !isAuthenticated ? children : <Navigate to="/dashboard" replace />;
