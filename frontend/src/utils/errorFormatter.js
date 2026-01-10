@@ -3,6 +3,10 @@
  * Prevents "Minified React error #31" by ensuring errors are always converted to strings
  */
 
+// Constants for error formatting
+const DEFAULT_ERROR_MESSAGE = 'An error occurred. Please try again.';
+const MAX_ERROR_STRING_LENGTH = 200;
+
 /**
  * Safely format any error value into a displayable string
  * This is the single source of truth for error formatting across the app
@@ -30,22 +34,38 @@ export function formatErrorForDisplay(err) {
       if (err.error_description) return String(err.error_description);
       if (err.statusText) return String(err.statusText);
       
-      // Try to stringify for debugging (useful in development)
-      const stringified = JSON.stringify(err, null, 2);
-      if (stringified && stringified !== '{}') {
-        return stringified;
+      // For development/debugging: try to show meaningful object representation
+      // But avoid returning "[object Object]" which React can't render well
+      try {
+        const stringified = JSON.stringify(err, null, 2);
+        if (stringified && stringified !== '{}' && stringified !== 'null') {
+          // Only return stringified version if it's short enough to be readable
+          if (stringified.length < MAX_ERROR_STRING_LENGTH) {
+            return stringified;
+          } else {
+            // For large objects, just show that an error occurred
+            return DEFAULT_ERROR_MESSAGE;
+          }
+        }
+      } catch (stringifyError) {
+        // If JSON.stringify fails (e.g., circular references), continue to fallback
+        console.error('Error stringifying error object:', stringifyError);
       }
-    } catch (stringifyError) {
-      // If JSON.stringify fails (e.g., circular references), use String()
-      console.error('Error stringifying error object:', stringifyError);
+      
+      // Last resort: return a generic message instead of "[object Object]"
+      return DEFAULT_ERROR_MESSAGE;
+    } catch (handlingError) {
+      console.error('Error in formatErrorForDisplay:', handlingError);
+      return DEFAULT_ERROR_MESSAGE;
     }
-    
-    // Last resort for objects
-    return String(err);
   }
   
-  // Fallback for any other type
-  return String(err);
+  // Fallback for any other type - avoid returning "[object Object]"
+  const converted = String(err);
+  if (converted === '[object Object]') {
+    return DEFAULT_ERROR_MESSAGE;
+  }
+  return converted;
 }
 
 /**

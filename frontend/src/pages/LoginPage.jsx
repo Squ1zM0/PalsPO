@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { handleAuthError } from '../utils/authErrors';
+import { formatErrorForDisplay } from '../utils/errorFormatter';
 
 function LoginPage() {
   const [email, setEmail] = useState('');
@@ -59,7 +60,7 @@ function LoginPage() {
               minLength="8"
             />
           </div>
-          {error && <div className="error">{String(error)}</div>}
+          {error && <div className="error">{formatErrorForDisplay(error)}</div>}
           <button type="submit" className="btn btn-primary" disabled={loading} style={{ width: '100%', marginTop: '20px', padding: '12px' }}>
             {loading ? '🔄 Logging in...' : '🚀 Login'}
           </button>

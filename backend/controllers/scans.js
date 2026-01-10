@@ -2,12 +2,27 @@ const AWS = require('aws-sdk');
 const multer = require('multer');
 const pool = require('../../db');
 
-// Configure AWS S3
-const s3 = new AWS.S3({
-  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-  region: process.env.AWS_REGION
-});
+// Check if we should use stub mode
+// Stub mode is enabled when:
+// 1. USE_STUB_SERVICES is explicitly set to 'true', OR
+// 2. Any required AWS credentials are missing (ACCESS_KEY_ID, SECRET_ACCESS_KEY, or REGION)
+const USE_STUB_SERVICES = process.env.USE_STUB_SERVICES === 'true' || 
+  !process.env.AWS_ACCESS_KEY_ID || 
+  !process.env.AWS_SECRET_ACCESS_KEY ||
+  !process.env.AWS_REGION;
+
+// In-memory storage for stub mode
+const stubStorage = new Map();
+
+// Configure AWS S3 (only if not in stub mode)
+let s3 = null;
+if (!USE_STUB_SERVICES) {
+  s3 = new AWS.S3({
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    region: process.env.AWS_REGION
+  });
+}
 
 // Configure multer for memory storage
 const upload = multer({
@@ -53,15 +68,35 @@ const uploadScan = async (req, res) => {
     const timestamp = Date.now();
     const s3Key = `scans/${req.userId}/${letterEventId}/${timestamp}_${req.file.originalname}`;
 
-    // Upload to S3
-    const s3Params = {
-      Bucket: process.env.S3_BUCKET,
-      Key: s3Key,
-      Body: req.file.buffer,
-      ContentType: req.file.mimetype
-    };
+    if (USE_STUB_SERVICES) {
+      // Stub mode: store file in memory
+      console.log('[STUB MODE] Storing scan in memory instead of S3');
+      stubStorage.set(s3Key, {
+        buffer: req.file.buffer,
+        contentType: req.file.mimetype,
+        metadata: {
+          original_name: req.file.originalname,
+          size: req.file.size,
+          mime_type: req.file.mimetype,
+          uploaded_by: req.userId
+        }
+      });
+    } else {
+      // Real mode: Upload to S3
+      // Defensive check: s3 should always be initialized in non-stub mode
+      if (!s3) {
+        return res.status(500).json({ error: 'S3 client not configured' });
+      }
+      
+      const s3Params = {
+        Bucket: process.env.S3_BUCKET,
+        Key: s3Key,
+        Body: req.file.buffer,
+        ContentType: req.file.mimetype
+      };
 
-    await s3.upload(s3Params).promise();
+      await s3.upload(s3Params).promise();
+    }
 
     // Save scan asset to database
     const scanResult = await pool.query(
@@ -141,14 +176,37 @@ const getScanUrl = async (req, res) => {
 
     const scan = scanResult.rows[0];
 
-    // Generate signed URL (valid for 1 hour)
-    const signedUrl = s3.getSignedUrl('getObject', {
-      Bucket: process.env.S3_BUCKET,
-      Key: scan.s3_key,
-      Expires: 3600
-    });
+    if (USE_STUB_SERVICES) {
+      // Stub mode: return a data URL from in-memory storage
+      console.log('[STUB MODE] Generating data URL from in-memory storage');
+      const stubData = stubStorage.get(scan.s3_key);
+      
+      if (!stubData) {
+        return res.status(404).json({ 
+          error: 'Scan file not available - it may have been lost when the server restarted (stub mode uses in-memory storage)' 
+        });
+      }
 
-    res.json({ url: signedUrl });
+      // Convert buffer to base64 data URL
+      const base64 = stubData.buffer.toString('base64');
+      const dataUrl = `data:${stubData.contentType};base64,${base64}`;
+      
+      res.json({ url: dataUrl });
+    } else {
+      // Real mode: Generate signed URL (valid for 1 hour)
+      // Defensive check: s3 should always be initialized in non-stub mode
+      if (!s3) {
+        return res.status(500).json({ error: 'S3 client not configured' });
+      }
+      
+      const signedUrl = s3.getSignedUrl('getObject', {
+        Bucket: process.env.S3_BUCKET,
+        Key: scan.s3_key,
+        Expires: 3600
+      });
+
+      res.json({ url: signedUrl });
+    }
   } catch (error) {
     console.error('Get scan URL error:', error);
     res.status(500).json({ error: 'Internal server error' });
