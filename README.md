@@ -97,7 +97,12 @@ Required environment variables:
 - `DATABASE_URL`: PostgreSQL connection string
 - `JWT_SECRET`: Secret key for JWT tokens
 - `ADDRESS_ENCRYPTION_KEY`: 64-character hex key for address encryption
-- `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_REGION`, `S3_BUCKET`: AWS S3 credentials
+
+Optional environment variables for development:
+- `USE_STUB_SERVICES`: Set to `true` to use in-memory stubs instead of real API services (enabled by default when AWS credentials are missing)
+- `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_REGION`, `S3_BUCKET`: AWS S3 credentials (optional in development mode)
+
+**Note**: For local development without AWS credentials, the application will automatically use stub mode for S3 operations (scan uploads). This allows you to develop and test the application without setting up external API services. Set `USE_STUB_SERVICES=true` in your `.env` file or simply omit AWS credentials.
 
 4. **Install dependencies**
 
@@ -142,6 +147,28 @@ npm run dev
 7. **Access the application**
 
 Open your browser to: `http://localhost:5173`
+
+## Development Mode (Stub Services)
+
+For local development, the application supports a **stub mode** that allows you to run the application without external API credentials:
+
+- **Automatic Activation**: Stub mode is automatically enabled when AWS credentials are not configured
+- **Manual Activation**: Set `USE_STUB_SERVICES=true` in your `.env` file
+- **What's Stubbed**: 
+  - AWS S3 operations (scan uploads/downloads use in-memory storage)
+  - Future: Firebase and SendGrid (when implemented)
+
+**Benefits**:
+- Develop without API keys
+- Faster local testing
+- No external API costs during development
+- No internet connectivity required for stubbed services
+
+**Limitations**:
+- Stubbed data is stored in memory and lost when the server restarts
+- Scan images in stub mode are only available during the current server session
+
+To use real AWS S3 in development, set the required AWS environment variables in your `.env` file.
 
 ## Usage Flow
 
