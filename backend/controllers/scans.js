@@ -3,9 +3,13 @@ const multer = require('multer');
 const pool = require('../../db');
 
 // Check if we should use stub mode
+// Stub mode is enabled when:
+// 1. USE_STUB_SERVICES is explicitly set to 'true', OR
+// 2. Any required AWS credentials are missing (ACCESS_KEY_ID, SECRET_ACCESS_KEY, or REGION)
 const USE_STUB_SERVICES = process.env.USE_STUB_SERVICES === 'true' || 
   !process.env.AWS_ACCESS_KEY_ID || 
-  !process.env.AWS_SECRET_ACCESS_KEY;
+  !process.env.AWS_SECRET_ACCESS_KEY ||
+  !process.env.AWS_REGION;
 
 // In-memory storage for stub mode
 const stubStorage = new Map();
@@ -79,6 +83,7 @@ const uploadScan = async (req, res) => {
       });
     } else {
       // Real mode: Upload to S3
+      // Defensive check: s3 should always be initialized in non-stub mode
       if (!s3) {
         return res.status(500).json({ error: 'S3 client not configured' });
       }
@@ -177,7 +182,9 @@ const getScanUrl = async (req, res) => {
       const stubData = stubStorage.get(scan.s3_key);
       
       if (!stubData) {
-        return res.status(404).json({ error: 'Scan file not found in stub storage' });
+        return res.status(404).json({ 
+          error: 'Scan file not available - it may have been lost when the server restarted (stub mode uses in-memory storage)' 
+        });
       }
 
       // Convert buffer to base64 data URL
@@ -187,6 +194,7 @@ const getScanUrl = async (req, res) => {
       res.json({ url: dataUrl });
     } else {
       // Real mode: Generate signed URL (valid for 1 hour)
+      // Defensive check: s3 should always be initialized in non-stub mode
       if (!s3) {
         return res.status(500).json({ error: 'S3 client not configured' });
       }
