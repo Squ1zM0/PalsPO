@@ -80,6 +80,9 @@ app.get('/api/health', async (req, res) => {
       hasDatabase: !!process.env.DATABASE_URL,
       hasJwtSecret: !!process.env.JWT_SECRET,
       hasAwsConfig: !!(process.env.AWS_ACCESS_KEY_ID && process.env.AWS_SECRET_ACCESS_KEY),
+      stubServicesEnabled: process.env.USE_STUB_SERVICES === 'true' || 
+        !process.env.AWS_ACCESS_KEY_ID || 
+        !process.env.AWS_SECRET_ACCESS_KEY,
     }
   };
 
