@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { MIN_PASSWORD_LENGTH } from '../constants';
 import { handleAuthError } from '../utils/authErrors';
+import { formatErrorForDisplay } from '../utils/errorFormatter';
 
 function RegisterPage() {
   const [email, setEmail] = useState('');
@@ -80,7 +81,7 @@ function RegisterPage() {
             />
             <small style={{ color: '#666', fontSize: '12px' }}>Must be at least 8 characters long</small>
           </div>
-          {error && <div className="error">{String(error)}</div>}
+          {error && <div className="error">{formatErrorForDisplay(error)}</div>}
           <button type="submit" className="btn btn-primary" disabled={loading} style={{ width: '100%', marginTop: '20px', padding: '12px' }}>
             {loading ? '🔄 Creating account...' : '✨ Create Account'}
           </button>
