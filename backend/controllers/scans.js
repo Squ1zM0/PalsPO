@@ -79,6 +79,10 @@ const uploadScan = async (req, res) => {
       });
     } else {
       // Real mode: Upload to S3
+      if (!s3) {
+        return res.status(500).json({ error: 'S3 client not configured' });
+      }
+      
       const s3Params = {
         Bucket: process.env.S3_BUCKET,
         Key: s3Key,
@@ -183,6 +187,10 @@ const getScanUrl = async (req, res) => {
       res.json({ url: dataUrl });
     } else {
       // Real mode: Generate signed URL (valid for 1 hour)
+      if (!s3) {
+        return res.status(500).json({ error: 'S3 client not configured' });
+      }
+      
       const signedUrl = s3.getSignedUrl('getObject', {
         Bucket: process.env.S3_BUCKET,
         Key: scan.s3_key,
