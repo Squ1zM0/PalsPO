@@ -3,6 +3,10 @@
  * Prevents "Minified React error #31" by ensuring errors are always converted to strings
  */
 
+// Constants for error formatting
+const DEFAULT_ERROR_MESSAGE = 'An error occurred. Please try again.';
+const MAX_ERROR_STRING_LENGTH = 200;
+
 /**
  * Safely format any error value into a displayable string
  * This is the single source of truth for error formatting across the app
@@ -36,11 +40,11 @@ export function formatErrorForDisplay(err) {
         const stringified = JSON.stringify(err, null, 2);
         if (stringified && stringified !== '{}' && stringified !== 'null') {
           // Only return stringified version if it's short enough to be readable
-          if (stringified.length < 200) {
+          if (stringified.length < MAX_ERROR_STRING_LENGTH) {
             return stringified;
           } else {
             // For large objects, just show that an error occurred
-            return 'An error occurred. Please try again.';
+            return DEFAULT_ERROR_MESSAGE;
           }
         }
       } catch (stringifyError) {
@@ -49,17 +53,17 @@ export function formatErrorForDisplay(err) {
       }
       
       // Last resort: return a generic message instead of "[object Object]"
-      return 'An error occurred. Please try again.';
+      return DEFAULT_ERROR_MESSAGE;
     } catch (handlingError) {
       console.error('Error in formatErrorForDisplay:', handlingError);
-      return 'An error occurred. Please try again.';
+      return DEFAULT_ERROR_MESSAGE;
     }
   }
   
   // Fallback for any other type - avoid returning "[object Object]"
   const converted = String(err);
   if (converted === '[object Object]') {
-    return 'An error occurred. Please try again.';
+    return DEFAULT_ERROR_MESSAGE;
   }
   return converted;
 }
